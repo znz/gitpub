@@ -1,0 +1,5 @@
+GitPub
+
+Web application to publish static files based on git and rack.
+
+Pub means 'publish' and supporting only static files like publicfile of DJB.
