@@ -11,9 +11,7 @@
 # execute some commands:
 #  gem install rack
 #  git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git
-#  echo "require 'gitpub'" > config.ru
-#  echo "run GitPub.new('linux-2.6/.git', /\Av2\.6\.\d+\z/)" >> config.ru
-#  rackup -d config.ru
+#  rackup -d linux-2.6.ru
 # and open http://localhost:9292/ with your browser.
 #
 # == License (The MIT License)
