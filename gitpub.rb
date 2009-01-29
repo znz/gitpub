@@ -44,8 +44,15 @@ require 'rack/mime'
 class GitPub
   include ERB::Util
 
+  # path to git command
   GIT_BIN = "git"
 
+  # Create GitPub instance.
+  #
+  # git_dir :: path to .git or git bare repository.
+  # pub_tag_regexp :: Regexp of publish tag.
+  #                   Recommends use \A and \z instead of ^ and $.
+  # title :: HTML title prefix. Default is repository's directory name.
   def initialize(git_dir, pub_tag_regexp=/\A([^\/:]+)\z/, title=nil)
     @git_dir = git_dir
     @pub_tag_regexp = pub_tag_regexp
@@ -58,6 +65,7 @@ class GitPub
     @title = title
   end
 
+  # Wrapper of git command.
   def git(*args)
     IO.popen("-", "r") do |io|
       if io
@@ -70,6 +78,7 @@ class GitPub
   end
   private :git
 
+  # List public tags.
   def list_pub_tag(env, res)
     tags = []
     git("tag") do |io|
@@ -83,6 +92,8 @@ class GitPub
     tags.sort!
     E_list_pub_tag.result(binding)
   end
+
+  # ERB template of list_pub_tag.
   E_list_pub_tag = ERB.new(<<-ERUBY, 1, '-')
 <html>
 <head>
@@ -99,6 +110,7 @@ class GitPub
 </html>
   ERUBY
 
+  # List files in the blob (tag or directory)
   def list_files(env, res, tag, path)
     files = []
     git("ls-tree", "-z", "#{tag}:#{path}") do |io|
@@ -118,6 +130,8 @@ class GitPub
     files = files.sort_by{|h| h[:file] }
     E_list_files.result(binding)
   end
+
+  # ERB template of list_files.
   E_list_files = ERB.new(<<-ERUBY, 1, '-')
 <html>
 <head>
@@ -142,6 +156,9 @@ class GitPub
 </html>
   ERUBY
 
+  # Show file content of object.
+  # Content-Type choose by Rack::Mime.mime_type of file extension.
+  # Default is text/plain.
   def show_file(env, res, tag, path)
     body = "(empty)"
     git("show", "#{tag}:#{path}") do |io|
@@ -156,6 +173,8 @@ class GitPub
     end
     E_show_file.result(binding)
   end
+
+  # ERB template of show_file.
   E_show_file = ERB.new(<<-ERUBY, 1, '-')
 <html>
 <head>
@@ -169,6 +188,7 @@ class GitPub
 </html>
   ERUBY
 
+  # Rack interface.
   def call(env)
     res = Rack::Response.new
     body = nil
