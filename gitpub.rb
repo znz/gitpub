@@ -14,6 +14,11 @@
 #  rackup -d linux-2.6.ru
 # and open http://localhost:9292/ with your browser.
 #
+# linux-2.6.ru is:
+#  require 'gitpub'
+#  run GitPub.new('linux-2.6/.git', /\Av2\.6\.\d+\z/)
+#
+#
 # == License (The MIT License)
 #
 # Copyright (c) 2009 Kazuhiro NISHIYAMA
