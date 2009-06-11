@@ -173,7 +173,6 @@ class GitPub
     if mime_type != "text/plain"
       res.write body
       res['Content-Type'] = mime_type
-      res['Content-Length'] = (body.bytesize rescue body.size).to_s
       return
     end
     E_show_file.result(binding)
@@ -212,7 +211,6 @@ class GitPub
     if body
       res.write body
       res['Content-Type'] = 'text/html; charset=utf-8'
-      res['Content-Length'] = (body.bytesize rescue body.size).to_s
     end
     res.finish
   end
