@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "gitpub"
-  s.version = "0.1.0"
-  s.date = "2009-01-30"
+  s.version = "0.1.1"
+  s.date = "2009-06-11"
   s.summary = "web application to publish static files based on git and rack"
   s.email = "zn@mbf.nifty.com"
   s.homepage = "http://github.com/znz/gitpub"
